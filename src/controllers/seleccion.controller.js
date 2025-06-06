@@ -126,7 +126,8 @@ const updateSeleccion = async (req, res) => {
             magullado,
             rajado,
             botritis,
-            exportable
+            exportable, 
+            remisionId
         } = req.body;
 
         const seleccion = await Seleccion.findByPk(id);
@@ -156,7 +157,7 @@ const updateSeleccion = async (req, res) => {
             magullado,
             rajado,
             botritis,
-            remisionId
+            exportable
         });
 
         //Actualizar las relaciones en SeleccionRelaciones
