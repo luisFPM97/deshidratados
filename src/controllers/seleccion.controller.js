@@ -137,10 +137,10 @@ const updateSeleccion = async (req, res) => {
         }
 
         //Verificar que no exista una selección con el mismo ID de remisión
-        const seleccionExistente = await Seleccion.findOne({ where: { remisionId } });
-        if (seleccionExistente) {
-            return res.status(400).json({ message: 'Ya existe una selección con este ID de remisión' });
-        }
+        //const seleccionExistente = await SeleccionRelaciones.findOne({ where: { remisionId } });
+        //if (seleccionExistente) {
+        //    return res.status(400).json({ message: 'Ya existe una selección con este ID de remisión' });
+        //}
 
         //Verificar que existan todos los IDs relacionados
         const [remision] = await Promise.all([
