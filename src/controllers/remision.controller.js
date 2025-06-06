@@ -127,6 +127,9 @@ const createRemision = async (req, res) => {
 
         console.log('Relación en RemisionRelaciones creada para remisionId:', remision.id);
 
+        //incluir trazabilidad
+
+
         // Obtener la remisión creada con sus relaciones
         const remisionCreada = await Remision.findByPk(remision.id, {
             include: [
@@ -140,6 +143,7 @@ const createRemision = async (req, res) => {
                         { model: Tipofruta }
                     ]
                 }
+                //{model: Trazabilidad}
             ]
         });
 
