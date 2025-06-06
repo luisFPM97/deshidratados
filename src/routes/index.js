@@ -6,6 +6,7 @@ const routerCertica = require('./certica.routes');
 const routerTipofruta = require('./tipofruta.routes');
 const routerRemision = require('./remision.routes');
 const routerFruta = require('./fruta.routes');
+const routerSeleccion = require('./seleccion.routes');
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use('/', routerCertica);
 router.use('/', routerTipofruta);
 router.use('/', routerRemision);
 router.use('/', routerFruta);
+router.use('/', routerSeleccion);
 
 module.exports = router;

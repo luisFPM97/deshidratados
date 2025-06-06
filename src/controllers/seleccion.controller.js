@@ -126,7 +126,7 @@ const updateSeleccion = async (req, res) => {
             magullado,
             rajado,
             botritis,
-            remisionId
+            exportable
         } = req.body;
 
         const seleccion = await Seleccion.findByPk(id);

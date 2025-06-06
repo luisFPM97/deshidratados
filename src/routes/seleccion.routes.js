@@ -10,18 +10,18 @@ const {
 const routerSeleccion = Router();
 
 //Obtener todas las selecciones
-router.get('/selecciones', getAllSelecciones);
+routerSeleccion.get('/selecciones', getAllSelecciones);
 
 //Obtener una selección por ID
-router.get('/selecciones/:id', getSeleccionById);
+routerSeleccion.get('/selecciones/:id', getSeleccionById);
 
 //Crear una selección
-router.post('/selecciones', createSeleccion);
+routerSeleccion.post('/selecciones', createSeleccion);
 
 //Actualizar una selección
-router.put('/selecciones/:id', updateSeleccion);
+routerSeleccion.put('/selecciones/:id', updateSeleccion);
 
 //Eliminar una selección
-router.delete('/selecciones/:id', deleteSeleccion);
+routerSeleccion.delete('/selecciones/:id', deleteSeleccion);
 
 module.exports = routerSeleccion;

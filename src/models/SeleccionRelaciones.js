@@ -31,4 +31,7 @@ const SeleccionRelaciones = sequelize.define('SeleccionRelaciones', {
 SeleccionRelaciones.belongsTo(Remision, { foreignKey: 'remisionId' });
 SeleccionRelaciones.belongsTo(Seleccion, { foreignKey: 'seleccionId' });
 
-export default SeleccionRelaciones;
+Remision.hasOne(SeleccionRelaciones, {foreignKey: 'remisionId'});
+Seleccion.hasMany(SeleccionRelaciones, {foreignKey: 'seleccionId'});
+
+module.exports = SeleccionRelaciones;
