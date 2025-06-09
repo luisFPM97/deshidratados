@@ -5,6 +5,7 @@ const Lote = require('../models/Lote');
 const Certica = require('../models/Certica');
 const Tipofruta = require('../models/Tipofruta');
 const RemisionRelaciones = require('../models/RemisionRelaciones');
+const Trazabilidad = require('../models/Trazabilidad');
 
 // Obtener todas las remisiones
 const getAllRemisiones = async (req, res) => {
@@ -18,7 +19,8 @@ const getAllRemisiones = async (req, res) => {
                         { model: Finca },
                         { model: Lote },
                         { model: Certica },
-                        { model: Tipofruta }
+                        { model: Tipofruta },
+                        { model: Trazabilidad}
                     ]
                 }
             ]
@@ -41,7 +43,8 @@ const getRemisionById = async (req, res) => {
                         { model: Finca },
                         { model: Lote },
                         { model: Certica },
-                        { model: Tipofruta }
+                        { model: Tipofruta },
+                        { model: Trazabilidad}
                     ]
                 }
             ]
@@ -72,7 +75,8 @@ const createRemision = async (req, res) => {
             fincaId,
             loteId,
             certicaId,
-            tipofrutaId
+            tipofrutaId,
+            trazabilidadId,
         } = req.body;
 
         // Verificar si ya existe una remisión con el mismo número
@@ -82,15 +86,16 @@ const createRemision = async (req, res) => {
         }
 
         // Verificar que existan todos los IDs relacionados
-        const [productor, finca, lote, certica, tipofruta] = await Promise.all([
+        const [productor, finca, lote, certica, tipofruta, trazabilidad] = await Promise.all([
             Productor.findByPk(productorId),
             Finca.findByPk(fincaId),
             Lote.findByPk(loteId),
             Certica.findByPk(certicaId),
-            Tipofruta.findByPk(tipofrutaId)
+            Tipofruta.findByPk(tipofrutaId),
+            Trazabilidad.findByPk(trazabilidadId)
         ]);
 
-        if (!productor || !finca || !lote || !certica || !tipofruta) {
+        if (!productor || !finca || !lote || !certica || !tipofruta || !trazabilidad) {
             return res.status(400).json({ message: 'Uno o más IDs relacionados no existen' });
         }
 
@@ -122,7 +127,8 @@ const createRemision = async (req, res) => {
             fincaId,
             loteId,
             certicaId,
-            tipofrutaId
+            tipofrutaId,
+            trazabilidadId
         });
 
         console.log('Relación en RemisionRelaciones creada para remisionId:', remision.id);
@@ -171,7 +177,8 @@ const updateRemision = async (req, res) => {
             fincaId,
             loteId,
             certicaId,
-            tipofrutaId
+            tipofrutaId,
+            trazabilidadId
         } = req.body;
 
         const remision = await Remision.findByPk(req.params.id);
@@ -193,10 +200,11 @@ const updateRemision = async (req, res) => {
             Finca.findByPk(fincaId),
             Lote.findByPk(loteId),
             Certica.findByPk(certicaId),
-            Tipofruta.findByPk(tipofrutaId)
+            Tipofruta.findByPk(tipofrutaId),
+            Trazabilidad.findByPk(trazabilidadId)
         ]);
 
-        if (!productor || !finca || !lote || !certica || !tipofruta) {
+        if (!productor || !finca || !lote || !certica || !tipofruta ||!trazabilidad) {
             return res.status(400).json({ message: 'Uno o más IDs relacionados no existen' });
         }
 
@@ -220,7 +228,8 @@ const updateRemision = async (req, res) => {
                 fincaId,
                 loteId,
                 certicaId,
-                tipofrutaId
+                tipofrutaId,
+                trazabilidadId
             },
             {
                 where: { remisionId: remision.id }
@@ -239,7 +248,8 @@ const updateRemision = async (req, res) => {
                         { model: Certica },
                         { model: Tipofruta }
                     ]
-                }
+                },
+                {model: Trazabilidad}
             ]
         });
 
