@@ -7,6 +7,7 @@ const routerTipofruta = require('./tipofruta.routes');
 const routerRemision = require('./remision.routes');
 const routerFruta = require('./fruta.routes');
 const routerSeleccion = require('./seleccion.routes');
+const routerTrazabilidad = require('./trazabilidad.routes');
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/', routerTipofruta);
 router.use('/', routerRemision);
 router.use('/', routerFruta);
 router.use('/', routerSeleccion);
+router.use('/', routerTrazabilidad);
 
 module.exports = router;

@@ -142,8 +142,8 @@ const createRemision = async (req, res) => {
                         { model: Certica },
                         { model: Tipofruta }
                     ]
-                }
-                //{model: Trazabilidad}
+                },
+                {model: Trazabilidad}
             ]
         });
 
