@@ -6,6 +6,12 @@ const Certica = require('../models/Certica');
 const Tipofruta = require('../models/Tipofruta');
 const RemisionRelaciones = require('../models/RemisionRelaciones');
 const Trazabilidad = require('../models/Trazabilidad');
+const Embalaje = require('../models/Embalaje');
+const SeleccionRelaciones = require('../models/SeleccionRelaciones');
+const Seleccion = require('../models/Seleccion');
+const Embarque = require('../models/Embarque');
+const Presentacion = require('../models/Presentacion');
+const TipoPresentacion = require('../models/TipoPresentacion');
 
 // Obtener todas las remisiones
 const getAllRemisiones = async (req, res) => {
@@ -21,6 +27,20 @@ const getAllRemisiones = async (req, res) => {
                         { model: Certica },
                         { model: Tipofruta },
                         { model: Trazabilidad}
+                    ]
+                },
+                {
+                    model: Embalaje,
+                    include:[
+                        {model: Embarque},
+                        {model: Presentacion},
+                        {model: TipoPresentacion}
+                    ]
+                },
+                {
+                    model: SeleccionRelaciones,
+                    include: [
+                        {model:Seleccion}
                     ]
                 }
             ]
@@ -45,6 +65,20 @@ const getRemisionById = async (req, res) => {
                         { model: Certica },
                         { model: Tipofruta },
                         { model: Trazabilidad}
+                    ]
+                },
+                {
+                    model: Embalaje,
+                    include:[
+                        {model: Embarque},
+                        {model: Presentacion},
+                        {model: TipoPresentacion}
+                    ]
+                },
+                {
+                    model: SeleccionRelaciones,
+                    include: [
+                        {model:Seleccion}
                     ]
                 }
             ]
@@ -76,7 +110,7 @@ const createRemision = async (req, res) => {
             loteId,
             certicaId,
             tipofrutaId,
-            trazabilidadId,
+            trazabilidad
         } = req.body;
 
         // Verificar si ya existe una remisión con el mismo número
@@ -86,16 +120,16 @@ const createRemision = async (req, res) => {
         }
 
         // Verificar que existan todos los IDs relacionados
-        const [productor, finca, lote, certica, tipofruta, trazabilidad] = await Promise.all([
+        const [productor, finca, lote, certica, tipofruta] = await Promise.all([
             Productor.findByPk(productorId),
             Finca.findByPk(fincaId),
             Lote.findByPk(loteId),
             Certica.findByPk(certicaId),
             Tipofruta.findByPk(tipofrutaId),
-            Trazabilidad.findByPk(trazabilidadId)
+            
         ]);
 
-        if (!productor || !finca || !lote || !certica || !tipofruta || !trazabilidad) {
+        if (!productor || !finca || !lote || !certica || !tipofruta ) {
             return res.status(400).json({ message: 'Uno o más IDs relacionados no existen' });
         }
 
@@ -111,6 +145,7 @@ const createRemision = async (req, res) => {
             registroAplicacion,
             devolucionPuerta
         });
+        console.log(remision.id)
 
         // Verificar que el ID de la remisión se generó correctamente
         if (!remision || !remision.id) {
@@ -119,6 +154,16 @@ const createRemision = async (req, res) => {
         }
 
         console.log('Remision creada con ID:', remision.id);
+        //incluir trazabilidad
+        const trazabilidadCreada = await Trazabilidad.create({
+            numero: trazabilidad
+        })
+        //verificamos si se creo trazazbilidad
+        if (!trazabilidadCreada || !trazabilidadCreada.id){
+            console.error('Error al obtener el Id de trazabilidad', trazabilidadCreada);
+            return res.estatus(500).json({message: 'Error interno al crear la trazabilidad.'});
+        }
+        
 
         // Crear las relaciones en RemisionRelaciones
         await RemisionRelaciones.create({
@@ -128,13 +173,13 @@ const createRemision = async (req, res) => {
             loteId,
             certicaId,
             tipofrutaId,
-            trazabilidadId
+            trazabilidadId: trazabilidadCreada.id
         });
 
         console.log('Relación en RemisionRelaciones creada para remisionId:', remision.id);
-
-        //incluir trazabilidad
-
+        //verificamos si se creo relacion remisiones
+        
+        
 
         // Obtener la remisión creada con sus relaciones
         const remisionCreada = await Remision.findByPk(remision.id, {
@@ -146,10 +191,10 @@ const createRemision = async (req, res) => {
                         { model: Finca },
                         { model: Lote },
                         { model: Certica },
-                        { model: Tipofruta }
+                        { model: Tipofruta },
+                        { model: Trazabilidad}
                     ]
-                },
-                {model: Trazabilidad}
+                }
             ]
         });
 
@@ -180,7 +225,7 @@ const updateRemision = async (req, res) => {
             tipofrutaId,
             trazabilidadId
         } = req.body;
-
+        console.log(req.body)
         const remision = await Remision.findByPk(req.params.id);
         if (!remision) {
             return res.status(404).json({ message: 'Remisión no encontrada' });
@@ -195,16 +240,16 @@ const updateRemision = async (req, res) => {
         }
 
         // Verificar que existan todos los IDs relacionados
-        const [productor, finca, lote, certica, tipofruta] = await Promise.all([
+        const [productor, finca, lote, certica, tipofruta, trazabilidad] = await Promise.all([
             Productor.findByPk(productorId),
             Finca.findByPk(fincaId),
             Lote.findByPk(loteId),
             Certica.findByPk(certicaId),
             Tipofruta.findByPk(tipofrutaId),
-            Trazabilidad.findByPk(trazabilidadId)
+            
         ]);
 
-        if (!productor || !finca || !lote || !certica || !tipofruta ||!trazabilidad) {
+        if (!productor || !finca || !lote || !certica || !tipofruta ) {
             return res.status(400).json({ message: 'Uno o más IDs relacionados no existen' });
         }
 
@@ -246,10 +291,10 @@ const updateRemision = async (req, res) => {
                         { model: Finca },
                         { model: Lote },
                         { model: Certica },
-                        { model: Tipofruta }
+                        { model: Tipofruta },
+                        {model: Trazabilidad}
                     ]
-                },
-                {model: Trazabilidad}
+                }
             ]
         });
 

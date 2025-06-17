@@ -8,6 +8,10 @@ const routerRemision = require('./remision.routes');
 const routerFruta = require('./fruta.routes');
 const routerSeleccion = require('./seleccion.routes');
 const routerTrazabilidad = require('./trazabilidad.routes');
+const routerEmbarque = require('./embarque.routes');
+const routerTipoPresentacion = require('./tipopresentacion.routes');
+const routerPresentacion = require('./presentacion.routes');
+const routerEmbalaje = require('./embalaje.routes');
 
 const router = Router();
 
@@ -21,5 +25,9 @@ router.use('/', routerRemision);
 router.use('/', routerFruta);
 router.use('/', routerSeleccion);
 router.use('/', routerTrazabilidad);
+router.use('/', routerEmbarque);
+router.use('/', routerTipoPresentacion);
+router.use('/', routerPresentacion);
+router.use('/', routerEmbalaje);
 
 module.exports = router;

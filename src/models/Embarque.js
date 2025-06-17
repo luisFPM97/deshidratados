@@ -1,13 +1,16 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
-const Remision = require('./Remision');
 
-const Trazabilidad = sequelize.define('Trazabilidad', {
+const Embarque = sequelize.define('embarque', {
+    
     numero: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    fechaDespacho: {
+        type: DataTypes.DATE,
         allowNull: true
     }
 });
 
-
-module.exports = Trazabilidad;
+module.exports = Embarque; 

@@ -55,10 +55,10 @@ const createCertica = async (req, res) => {
         }
 
         // Validar que el número no esté duplicado
-        const certicaExistente = await Certica.findOne({ where: { numero } });
-        if (certicaExistente) {
-            return res.status(400).json({ message: 'Ya existe un certificado con este número' });
-        }
+        //if (certicaExistente) {
+        //    const certicaExistente = await Certica.findOne({ where: { numero } });
+        //    return res.status(400).json({ message: 'Ya existe un certificado con este número' });
+        //}
 
         // Validar fechas
         const fechaEmisionDate = new Date(fechaEmision);
