@@ -16,7 +16,21 @@ const TipoPresentacion = require('../models/TipoPresentacion');
 // Obtener todas las remisiones
 const getAllRemisiones = async (req, res) => {
     try {
+        const { fechaInicio, fechaFin } = req.query;
+        let where = {};
+        if (fechaInicio && fechaFin) {
+            // Validar formato de fecha (YYYY-MM-DD)
+            const inicioValida = /^\d{4}-\d{2}-\d{2}$/.test(fechaInicio);
+            const finValida = /^\d{4}-\d{2}-\d{2}$/.test(fechaFin);
+            if (!inicioValida || !finValida) {
+                return res.status(400).json({ message: 'Formato de fecha inválido. Usa YYYY-MM-DD.' });
+            }
+            where.fechaRecepcion = {
+                [require('sequelize').Op.between]: [fechaInicio, fechaFin]
+            };
+        }
         const remisiones = await Remision.findAll({
+            where,
             include: [
                 {
                     model: RemisionRelaciones,
