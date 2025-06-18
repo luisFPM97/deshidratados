@@ -12,6 +12,8 @@ const routerEmbarque = require('./embarque.routes');
 const routerTipoPresentacion = require('./tipopresentacion.routes');
 const routerPresentacion = require('./presentacion.routes');
 const routerEmbalaje = require('./embalaje.routes');
+const routerGGN = require('./ggn.routes');
+const routerFactura = require('./factura.routes');
 
 const router = Router();
 
@@ -29,5 +31,7 @@ router.use('/', routerEmbarque);
 router.use('/', routerTipoPresentacion);
 router.use('/', routerPresentacion);
 router.use('/', routerEmbalaje);
+router.use('/', routerGGN);
+router.use('/', routerFactura);
 
 module.exports = router;
