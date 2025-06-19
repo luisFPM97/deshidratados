@@ -51,7 +51,8 @@ const createSeleccion = async (req, res) => {
             magullado,
             rajado,
             botritis,
-            remisionId
+            remisionId,
+            exportable // <-- Agregado aquí
         } = req.body;
         
         //Verificar que no exista una selección para esa remision
@@ -78,7 +79,8 @@ const createSeleccion = async (req, res) => {
             magullado,
             rajado,
             botritis,
-            remisionId
+            remisionId,
+            exportable // <-- Agregado aquí
         });
 
         //Verificar que el ID de la selección se generó correctamente
@@ -93,7 +95,6 @@ const createSeleccion = async (req, res) => {
         await SeleccionRelaciones.create({
             seleccionId: seleccion.id,
             remisionId
-            
         });
 
         console.log('Relación en SeleccionRelaciones creada para seleccionId:', seleccion.id);

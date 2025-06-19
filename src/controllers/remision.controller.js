@@ -12,6 +12,7 @@ const Seleccion = require('../models/Seleccion');
 const Embarque = require('../models/Embarque');
 const Presentacion = require('../models/Presentacion');
 const TipoPresentacion = require('../models/TipoPresentacion');
+const Factura = require('../models/Factura');
 
 // Obtener todas las remisiones
 const getAllRemisiones = async (req, res) => {
@@ -46,7 +47,9 @@ const getAllRemisiones = async (req, res) => {
                 {
                     model: Embalaje,
                     include:[
-                        {model: Embarque},
+                        {model: Embarque, 
+                            include: [
+                                { model: Factura}]},
                         {model: Presentacion},
                         {model: TipoPresentacion}
                     ]
@@ -84,7 +87,9 @@ const getRemisionById = async (req, res) => {
                 {
                     model: Embalaje,
                     include:[
-                        {model: Embarque},
+                        {model: Embarque, 
+                            include: [
+                                { model: Factura}]},
                         {model: Presentacion},
                         {model: TipoPresentacion}
                     ]

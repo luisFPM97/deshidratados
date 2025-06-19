@@ -1,9 +1,15 @@
 const Embarque = require('../models/Embarque'); // Importar el modelo Embarque
+const Factura = require('../models/Factura'); // Importar el modelo Factura
 
 // Obtener todos los embarques
 const getAllEmbarques = async (req, res) => {
     try {
-        const embarques = await Embarque.findAll();
+        const embarques = await Embarque.findAll({
+            include: [{
+                model: Factura,
+                attributes: ['numero']
+            }]
+        });
         res.json(embarques);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -13,7 +19,12 @@ const getAllEmbarques = async (req, res) => {
 // Obtener un embarque por ID
 const getEmbarqueById = async (req, res) => {
     try {
-        const embarque = await Embarque.findByPk(req.params.id);
+        const embarque = await Embarque.findByPk(req.params.id, {
+            include: [{
+                model: Factura,
+                attributes: ['numero']
+            }]
+        });
         if (!embarque) {
             return res.status(404).json({ message: 'Embarque no encontrado' });
         }
@@ -26,8 +37,8 @@ const getEmbarqueById = async (req, res) => {
 // Crear un nuevo embarque
 const createEmbarque = async (req, res) => {
     try {
-        const { numero } = req.body;
-        const embarque = await Embarque.create({ numero });
+        const { numero, fechaDespacho } = req.body;
+        const embarque = await Embarque.create({ numero, fechaDespacho });
         res.status(201).json(embarque);
     } catch (error) {
         res.status(500).json({ message: error.message });

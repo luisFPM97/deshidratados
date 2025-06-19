@@ -15,6 +15,7 @@ const Factura = sequelize.define('Factura', {
     embarqueId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique:true,
         references: {
             model: Embarque,
             key: 'id'
@@ -24,6 +25,6 @@ const Factura = sequelize.define('Factura', {
 
 // Relación con Embarque
 Factura.belongsTo(Embarque, { foreignKey: 'embarqueId' });
-Embarque.hasMany(Factura, { foreignKey: 'embarqueId' });
+Embarque.hasOne(Factura, { foreignKey: 'embarqueId' });
 
 module.exports = Factura; 
