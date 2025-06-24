@@ -1,4 +1,5 @@
 const Embalaje = require('../models/Embalaje');
+const Factura = require('../models/Factura');
 const Embarque = require('../models/Embarque');
 const Presentacion = require('../models/Presentacion');
 const TipoPresentacion = require('../models/TipoPresentacion');
@@ -9,7 +10,7 @@ const getAllEmbalajes = async (req, res) => {
     try {
         const embalajes = await Embalaje.findAll({
             include: [
-                { model: Embarque },
+                { model: Embarque, include: [{ model: Factura, attributes: ['numero'] }] },
                 { model: Presentacion },
                 { model: TipoPresentacion },
                 { model: Remision }
@@ -26,7 +27,7 @@ const getEmbalajeById = async (req, res) => {
     try {
         const embalaje = await Embalaje.findByPk(req.params.id, {
             include: [
-                { model: Embarque },
+                { model: Embarque, include: [{ model: Factura, attributes: ['numero'] }] },
                 { model: Presentacion },
                 { model: TipoPresentacion },
                 { model: Remision }
@@ -80,7 +81,7 @@ const createEmbalaje = async (req, res) => {
 
         const embalajeCreado = await Embalaje.findByPk(embalaje.id, {
             include: [
-                { model: Embarque },
+                { model: Embarque, include: [{ model: Factura, attributes: ['numero'] }] },
                 { model: Presentacion },
                 { model: TipoPresentacion },
                 { model: Remision }
@@ -142,7 +143,7 @@ const updateEmbalaje = async (req, res) => {
 
         const embalajeActualizado = await Embalaje.findByPk(embalaje.id, {
             include: [
-                { model: Embarque },
+                { model: Embarque, include: [{ model: Factura, attributes: ['numero'] }] },
                 { model: Presentacion },
                 { model: TipoPresentacion },
                 { model: Remision }

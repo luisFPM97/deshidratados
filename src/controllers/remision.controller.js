@@ -116,7 +116,9 @@ const getRemisionById = async (req, res) => {
                 {
                     model: Embalaje,
                     include:[
-                        {model: Embarque},
+                        {model: Embarque, 
+                            include: [
+                                { model: Factura}]},
                         {model: Presentacion},
                         {model: TipoPresentacion}
                     ]

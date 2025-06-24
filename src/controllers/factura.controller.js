@@ -38,16 +38,19 @@ const getFacturaById = async (req, res) => {
 const createFactura = async (req, res) => {
     try {
         const { numero, descripcion, embarqueId } = req.body;
+        console.log('Intentando crear factura:', req.body);
 
         // Validar que el embarque existe
         const embarque = await Embarque.findByPk(embarqueId);
         if (!embarque) {
+            console.log('Embarque no encontrado:', embarqueId);
             return res.status(404).json({ message: 'Embarque no encontrado' });
         }
 
         // Validar que el número no esté duplicado
         const facturaExistente = await Factura.findOne({ where: { numero } });
         if (facturaExistente) {
+            console.log('Factura duplicada:', numero);
             return res.status(400).json({ message: 'Ya existe una factura con este número' });
         }
 
@@ -57,8 +60,10 @@ const createFactura = async (req, res) => {
             embarqueId
         });
 
+        console.log('Factura creada exitosamente:', factura.toJSON());
         res.status(201).json(factura);
     } catch (error) {
+        console.log('Error inesperado al crear factura:', error);
         res.status(500).json({ message: error.message });
     }
 };
