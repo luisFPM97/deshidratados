@@ -42,6 +42,7 @@ const createGGN = async (req, res) => {
         // Validar que el productor existe
         const productor = await Productor.findByPk(productorId);
         if (!productor) {
+            console.log('productor no encontrado')
             return res.status(404).json({ message: 'productor no encontrado' });
         }
 
@@ -50,6 +51,7 @@ const createGGN = async (req, res) => {
         const fechaVencimientoDate = new Date(fechaVencimiento);
 
         if (fechaEmisionDate >= fechaVencimientoDate) {
+            console.log('La fecha de emisión debe ser anterior a la fecha de vencimiento')
             return res.status(400).json({ message: 'La fecha de emisión debe ser anterior a la fecha de vencimiento' });
         }
 

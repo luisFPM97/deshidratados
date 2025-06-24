@@ -1,12 +1,20 @@
-const Lote = require('../models/Lote');
-const Finca = require('../models/Finca');
+const Finca = require("../models/Finca");
+const Lote = require("../models/Lote");
+const FrutaLote = require("../models/FrutaLote");
+const Fruta  = require("../models/Fruta");
+
 
 // Obtener todos los lotes
 const getAllLotes = async (req, res) => {
     try {
         const lotes = await Lote.findAll({
             include: [
-                { model: Finca }
+                { model: Finca },
+                { model: FrutaLote,
+                    include: [
+                        {model: Fruta}
+                    ]
+                }
             ]
         });
         res.json(lotes);
@@ -20,7 +28,8 @@ const getLoteById = async (req, res) => {
     try {
         const lote = await Lote.findByPk(req.params.id, {
             include: [
-                { model: Finca }
+                { model: Finca },
+                { model: FrutaLote}
             ]
         });
         if (!lote) {

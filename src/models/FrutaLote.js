@@ -3,22 +3,15 @@ const sequelize = require('../utils/connection');
 const Fruta = require('./Fruta');
 const Lote = require('./Lote');
 
+
 const FrutaLote = sequelize.define('frutaLote', {
     frutaId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Fruta,
-            key: 'id'
-        }
+        allowNull: false
     },
     loteId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Lote,
-            key: 'id'
-        }
+        allowNull: false
     },
     fechaSiembra: {
         type: DataTypes.DATE,
@@ -42,14 +35,9 @@ const FrutaLote = sequelize.define('frutaLote', {
     }
 });
 
-// Establecer las relaciones muchos a muchos
-Fruta.belongsToMany(Lote, { 
-    through: FrutaLote,
-    foreignKey: 'frutaId'
-});
-Lote.belongsToMany(Fruta, { 
-    through: FrutaLote,
-    foreignKey: 'loteId'
-});
+FrutaLote.belongsTo(Fruta, { foreignKey: 'frutaId' });
+Fruta.hasMany(FrutaLote, { foreignKey: 'frutaId'});
+FrutaLote.belongsTo(Lote, { foreignKey: 'loteId'})
+Lote.hasOne(FrutaLote, { foreignKey: 'loteId' });
 
 module.exports = FrutaLote; 

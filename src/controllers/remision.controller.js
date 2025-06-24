@@ -12,6 +12,10 @@ const Seleccion = require('../models/Seleccion');
 const Embarque = require('../models/Embarque');
 const Presentacion = require('../models/Presentacion');
 const TipoPresentacion = require('../models/TipoPresentacion');
+const Factura = require('../models/Factura');
+const  FrutaLote  = require('../models/FrutaLote');
+const  Fruta  = require('../models/Fruta');
+const GGN = require('../models/GGN');
 
 // Obtener todas las remisiones
 const getAllRemisiones = async (req, res) => {
@@ -35,9 +39,21 @@ const getAllRemisiones = async (req, res) => {
                 {
                     model: RemisionRelaciones,
                     include: [
-                        { model: Productor },
+                        { model: Productor,
+                            include:[
+                                {model:GGN}
+                            ]
+                         },
                         { model: Finca },
-                        { model: Lote },
+                        { model: Lote,
+                            include:[
+                                {model: FrutaLote,
+                                    include: [
+                                        {model: Fruta}
+                                    ]
+                                }
+                            ]
+                         },
                         { model: Certica },
                         { model: Tipofruta },
                         { model: Trazabilidad}
@@ -46,7 +62,11 @@ const getAllRemisiones = async (req, res) => {
                 {
                     model: Embalaje,
                     include:[
-                        {model: Embarque},
+                        {model: Embarque,
+                            include:[
+                                {model: Factura}
+                            ]
+                        },
                         {model: Presentacion},
                         {model: TipoPresentacion}
                     ]
@@ -73,9 +93,21 @@ const getRemisionById = async (req, res) => {
                 {
                     model: RemisionRelaciones,
                     include: [
-                        { model: Productor },
+                        { model: Productor,
+                            include:[
+                                {model:GGN}
+                            ]
+                         },
                         { model: Finca },
-                        { model: Lote },
+                        { model: Lote,
+                            include:[
+                                {model: FrutaLote,
+                                    include: [
+                                        {model: Fruta}
+                                    ]
+                                }
+                            ]
+                         },
                         { model: Certica },
                         { model: Tipofruta },
                         { model: Trazabilidad}

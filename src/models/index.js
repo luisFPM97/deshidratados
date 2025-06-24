@@ -1,9 +1,17 @@
 const sequelize = require("../utils/connection");
+const Fruta = require("./Fruta");
+const FrutaLote = require("./FrutaLote");
+const Lote = require("./Lote");
 
-const Productor = require("./Productor");
 
-Productor.init(sequelize);
+// Asociaciones muchos a muchos
+
+
+// Si Productor usa Model.init, entonces sí necesitas esta línea
+
 
 module.exports = {
-    Productor
-}
+    Fruta,
+    Lote,
+    FrutaLote
+};

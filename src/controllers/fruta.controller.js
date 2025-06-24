@@ -9,21 +9,7 @@ const { Op } = require('sequelize');
 const getAllFrutas = async (req, res) => {
     try {
         const frutas = await Fruta.findAll({
-            include: [{
-                model: Lote,
-                attributes: ['numero'],
-                through: {
-                    attributes: ['fechaSiembra', 'cantidadPlantas', 'estado', 'observaciones']
-                },
-                include: [{
-                    model: Finca,
-                    attributes: ['nombre', 'codigo'],
-                    include: [{
-                        model: Productor,
-                        attributes: ['nombre', 'codigo']
-                    }]
-                }]
-            }]
+            
         });
         res.json(frutas);
     } catch (error) {
@@ -35,21 +21,7 @@ const getAllFrutas = async (req, res) => {
 const getFrutaById = async (req, res) => {
     try {
         const fruta = await Fruta.findByPk(req.params.id, {
-            include: [{
-                model: Lote,
-                attributes: ['numero'],
-                through: {
-                    attributes: ['fechaSiembra', 'cantidadPlantas', 'estado', 'observaciones']
-                },
-                include: [{
-                    model: Finca,
-                    attributes: ['nombre', 'codigo'],
-                    include: [{
-                        model: Productor,
-                        attributes: ['nombre', 'codigo']
-                    }]
-                }]
-            }]
+            
         });
         if (!fruta) {
             return res.status(404).json({ message: 'Fruta no encontrada' });
@@ -106,7 +78,7 @@ const updateFruta = async (req, res) => {
             }
 
             // Eliminar relaciones existentes
-            await FrutaLote.destroy({ where: { frutaId } });
+            //await FrutaLote.destroy({ where: { frutaId } });
 
             // Crear las nuevas relaciones con los datos actualizados
             await Promise.all(lotes.map(loteData => 
@@ -123,21 +95,7 @@ const updateFruta = async (req, res) => {
 
         // Obtener la fruta actualizada con sus relaciones
         const frutaActualizada = await Fruta.findByPk(frutaId, {
-            include: [{
-                model: Lote,
-                attributes: ['numero'],
-                through: {
-                    attributes: ['fechaSiembra', 'cantidadPlantas', 'estado', 'observaciones']
-                },
-                include: [{
-                    model: Finca,
-                    attributes: ['nombre', 'codigo'],
-                    include: [{
-                        model: Productor,
-                        attributes: ['nombre', 'codigo']
-                    }]
-                }]
-            }]
+            
         });
 
         res.json(frutaActualizada);

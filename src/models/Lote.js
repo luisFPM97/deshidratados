@@ -1,7 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../utils/connection');
 const Finca = require('./Finca');
-const Tipofruta = require('./Tipofruta');
+
+
 
 const Lote = sequelize.define('lote', {
     id: {
@@ -24,6 +25,7 @@ const Lote = sequelize.define('lote', {
 });
 
 // Relaciones
+
 Lote.belongsTo(Finca, { foreignKey: 'fincaId' });
 Finca.hasMany(Lote, { foreignKey: 'fincaId' });
 
