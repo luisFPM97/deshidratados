@@ -256,6 +256,7 @@ const createRemision = async (req, res) => {
 // Actualizar una remisión
 const updateRemision = async (req, res) => {
     try {
+        
         const {
             numero,
             fechaCosecha,
@@ -275,6 +276,7 @@ const updateRemision = async (req, res) => {
         } = req.body;
         console.log(req.body)
         const remision = await Remision.findByPk(req.params.id);
+        
         if (!remision) {
             return res.status(404).json({ message: 'Remisión no encontrada' });
         }
@@ -288,7 +290,7 @@ const updateRemision = async (req, res) => {
         }
 
         // Verificar que existan todos los IDs relacionados
-        const [productor, finca, lote, certica, tipofruta, trazabilidad] = await Promise.all([
+        const [productor, finca, lote, certica, tipofruta] = await Promise.all([
             Productor.findByPk(productorId),
             Finca.findByPk(fincaId),
             Lote.findByPk(loteId),
@@ -296,23 +298,27 @@ const updateRemision = async (req, res) => {
             Tipofruta.findByPk(tipofrutaId),
             
         ]);
+        
 
         if (!productor || !finca || !lote || !certica || !tipofruta ) {
             return res.status(400).json({ message: 'Uno o más IDs relacionados no existen' });
         }
 
         // Actualizar la remisión
-        await remision.update({
-            numero,
-            fechaCosecha,
-            fechaRecepcion,
-            brutoKg,
-            netoFrutaKg,
-            numeroCanastas,
-            netoCanastas,
-            registroAplicacion,
-            devolucionPuerta
-        });
+        
+        await Remision.update(
+            {
+                brutoKg,
+                netoFrutaKg,
+                numeroCanastas,
+                netoCanastas,
+                registroAplicacion,
+                devolucionPuerta
+            },
+            {
+                where: { id: remision.id}
+            });
+    
 
         // Actualizar las relaciones en RemisionRelaciones
         await RemisionRelaciones.update(
@@ -345,9 +351,10 @@ const updateRemision = async (req, res) => {
                 }
             ]
         });
-
+        console.log('la remision actualizada es ',remisionActualizada)
         res.json(remisionActualizada);
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ message: error.message });
     }
 };
