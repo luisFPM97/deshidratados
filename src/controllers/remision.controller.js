@@ -308,6 +308,7 @@ const updateRemision = async (req, res) => {
         
         await Remision.update(
             {
+
                 brutoKg,
                 netoFrutaKg,
                 numeroCanastas,
