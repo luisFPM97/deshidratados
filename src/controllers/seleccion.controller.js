@@ -1,6 +1,16 @@
 const Seleccion = require('../models/Seleccion');
 const Remision = require('../models/Remision');
 const SeleccionRelaciones = require('../models/SeleccionRelaciones');
+const RemisionRelaciones = require('../models/RemisionRelaciones');
+const Productor = require('../models/Productores');
+const Finca = require('../models/Finca');
+const Lote = require('../models/Lote');
+const FrutaLote = require('../models/FrutaLote');
+const Certica = require('../models/Certica');
+const Tipofruta = require('../models/Tipofruta');
+const Trazabilidad = require('../models/Trazabilidad');
+const GGN = require('../models/GGN');
+const Fruta = require('../models/Fruta');
 
 // Obtener todas las selecciones
 const getAllSelecciones = async (req, res) => {
@@ -10,7 +20,30 @@ const getAllSelecciones = async (req, res) => {
                 {
                     model: SeleccionRelaciones,
                     include: [
-                        { model: Remision }
+                        { model: Remision ,
+                            include: [
+                                {
+                                    model: RemisionRelaciones,
+                                    include: [
+                                        { model: Productor,
+                                            include:[
+                                                {model:GGN}
+                                            ]
+                                         },
+                                        { model: Finca },
+                                        { model: Lote,
+                                            include:[
+                                                {model: FrutaLote
+                                                }
+                                            ]
+                                         },
+                                        { model: Certica },
+                                        { model: Tipofruta },
+                                        { model: Trazabilidad}
+                                    ]
+                                }
+                            ]
+                        }
                     ]
                 }
             ]

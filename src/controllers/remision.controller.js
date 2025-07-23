@@ -272,11 +272,13 @@ const updateRemision = async (req, res) => {
             loteId,
             certicaId,
             tipofrutaId,
-            trazabilidadId
+            trazabilidadId,
+            trazabilidad
         } = req.body;
+        
         console.log(req.body)
         const remision = await Remision.findByPk(req.params.id);
-        
+        console.log("remision devuelta y encontrada",remision)
         if (!remision) {
             return res.status(404).json({ message: 'Remisión no encontrada' });
         }
@@ -284,6 +286,7 @@ const updateRemision = async (req, res) => {
         // Si se está cambiando el número, verificar que no exista
         if (numero && numero !== remision.numero) {
             const remisionExistente = await Remision.findOne({ where: { numero } });
+            console.log(numero)
             if (remisionExistente) {
                 return res.status(400).json({ message: 'Ya existe una remisión con este número' });
             }
@@ -308,7 +311,7 @@ const updateRemision = async (req, res) => {
         
         await Remision.update(
             {
-
+                numero,
                 brutoKg,
                 netoFrutaKg,
                 numeroCanastas,
@@ -332,7 +335,16 @@ const updateRemision = async (req, res) => {
                 trazabilidadId
             },
             {
-                where: { remisionId: remision.id }
+                where: { remisionId: remision.id}
+            }
+        );
+
+        await Trazabilidad.update(
+            {
+                numero: trazabilidad
+            },
+            {
+                where: { id: trazabilidadId}
             }
         );
 
