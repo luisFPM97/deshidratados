@@ -33,7 +33,8 @@ const getAllSelecciones = async (req, res) => {
                                         { model: Finca },
                                         { model: Lote,
                                             include:[
-                                                {model: FrutaLote
+                                                {
+                                                    model: FrutaLote
                                                 }
                                             ]
                                          },
